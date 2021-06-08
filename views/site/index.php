@@ -1,53 +1,54 @@
 <?php
 
-/* @var $this yii\web\View */
+/* @var $this yii\web\View
+ * @var $posts Post[]
+ */
+
+use app\models\Post;
+use yii\widgets\LinkPager;
+use yii\widgets\Pjax;
+use yii\helpers\Url;
 
 $this->title = 'My Yii Application';
 ?>
+
+
 <div class="site-index">
+  <section class="posts">
+    <div class="container">
 
-    <div class="jumbotron">
-        <h1>Congratulations!</h1>
+        <?php Pjax::begin() ?>
+      <ul class="posts__list">
+          <?php foreach ($posts as $post) { ?>
+            <li class="posts__item">
+              <div class="posts__card-post card-post">
+                <a class="card-post__link" href="<?= Url::to(['site/post', 'id' => $post->id]) ?>">
+                  <h4 class="card-post__title font-heading-2"><?= $post->title ?></h4>
+                </a>
+                <span class="card-post__date"><?= $post->created_at ?></span>
+                <p class="card-post__text"><?= $post->content ?></p>
+              </div>
+            </li>
 
-        <p class="lead">You have successfully created your Yii-powered application.</p>
+          <?php } ?>
+      </ul>
+      <div class="posts__pagination-widget pagination-widget">
+          <?= LinkPager::widget([
+              'options' => ['class' => 'pagination-widget__list'],
+              'pagination' => $pages,
+              'pageCssClass' => 'pagination-widget__item',
+              'prevPageCssClass' => 'pagination-widget__item pagination-widget_item-prev',
+              'nextPageCssClass' => 'pagination-widget__item pagination-widget_item-next',
+              'activePageCssClass' => 'pagination-widget__item_active',
+              'linkOptions' => ['class' => 'pagination-widget__link'],
+          ]) ?>
+      </div>
+        <?php Pjax::end() ?>
 
-        <p><a class="btn btn-lg btn-success" href="http://www.yiiframework.com">Get started with Yii</a></p>
+        <?php if (!Yii::$app->user->isGuest) { ?>
+          <a class="posts__btn-new-post btn-link btn-common" href="<?= Url::to(['site/create']) ?>">Create new post</a>
+        <?php } ?>
     </div>
+  </section>
 
-    <div class="body-content">
-
-        <div class="row">
-            <div class="col-lg-4">
-                <h2>Heading</h2>
-
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-                    dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
-                    ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
-                    fugiat nulla pariatur.</p>
-
-                <p><a class="btn btn-default" href="http://www.yiiframework.com/doc/">Yii Documentation &raquo;</a></p>
-            </div>
-            <div class="col-lg-4">
-                <h2>Heading</h2>
-
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-                    dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
-                    ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
-                    fugiat nulla pariatur.</p>
-
-                <p><a class="btn btn-default" href="http://www.yiiframework.com/forum/">Yii Forum &raquo;</a></p>
-            </div>
-            <div class="col-lg-4">
-                <h2>Heading</h2>
-
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-                    dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
-                    ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
-                    fugiat nulla pariatur.</p>
-
-                <p><a class="btn btn-default" href="http://www.yiiframework.com/extensions/">Yii Extensions &raquo;</a></p>
-            </div>
-        </div>
-
-    </div>
 </div>

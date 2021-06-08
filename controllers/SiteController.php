@@ -2,8 +2,13 @@
 
 namespace app\controllers;
 
+use app\models\Comment;
+use app\models\Post;
+use app\models\SignupForm;
 use Yii;
+use yii\data\Pagination;
 use yii\filters\AccessControl;
+use yii\helpers\Url;
 use yii\web\Controller;
 use yii\web\Response;
 use yii\filters\VerbFilter;
@@ -61,7 +66,18 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
-        return $this->render('index');
+        $query = Post::find();
+        $pages = new Pagination(['totalCount' => $query->count(), 'pageSize' => 5]);
+        $posts = $query->offset($pages->offset)
+            ->limit($pages->limit)
+            //->orderBy(['updated_at' => SORT_DESC])
+            ->orderBy(['id' => SORT_DESC])
+            ->all();
+
+        return $this->render('index', [
+            'posts' => $posts,
+            'pages' => $pages,
+        ]);
     }
 
     /**
@@ -98,6 +114,19 @@ class SiteController extends Controller
         return $this->goHome();
     }
 
+    public function actionSignup()
+    {
+        $model = new SignupForm();
+        if ($model->load(Yii::$app->request->post()) && $model->signup()) {
+            Yii::$app->session->setFlash('success', 'Thank you for registration. Now you can start writing your own posts.');
+            return $this->goHome();
+        }
+
+        return $this->render('signup', [
+            'model' => $model,
+        ]);
+    }
+
     /**
      * Displays contact page.
      *
@@ -124,5 +153,97 @@ class SiteController extends Controller
     public function actionAbout()
     {
         return $this->render('about');
+    }
+
+    public function actionPost($id = null)
+    {
+        if ($id !== null) {
+            $post = Post::getPostById($id);
+            if (isset($post)) {
+                $comment = new Comment();
+                $comments = Comment::getCommentsByPostId($post->id);
+                return $this->render('post', [
+                    'post' => $post,
+                    'comment' => $comment,
+                    'comments' => $comments,
+                ]);
+            }
+        }
+
+        return $this->goHome();
+    }
+
+    public function actionCreate()
+    {
+        if (Yii::$app->user->isGuest) {
+            $this->goHome();
+        }
+
+        $post = new Post();
+
+        if ($post->load(Yii::$app->request->post())) {
+            $post->user_id = Yii::$app->user->id;
+            if ($post->save()) {
+//                return $this->render('post', [
+//                    'post' => $post,
+//                ]);
+                return $this->redirect(Url::to(['site/post', 'id' => $post->id]));
+            }
+        }
+
+        return $this->render('post-edit', [
+            'post' => $post,
+        ]);
+    }
+
+    public function actionPostEdit($id = null)
+    {
+        if (Yii::$app->user->isGuest) {
+            return $this->redirect('/');
+        }
+
+        $post = Post::getPostById($id);
+        if ($post == null) {
+            $this->redirect('/');
+        }
+
+        // if save changes
+        if ($post->load(Yii::$app->request->post()) && $post->save()) {
+//            return $this->render('post-editor', [
+//                'post' => $post,
+//            ]);
+            return $this->redirect(Url::to(['site/post', 'id' => $post->id]));
+        }
+
+        if ($post->user_id == Yii::$app->user->id) {
+            return $this->render('post-edit', [
+                'post' => $post,
+            ]);
+        }
+
+        return $this->redirect(Url::to(['site/post', 'id' => $id]));
+    }
+
+    public function actionPostDelete($id = null)
+    {
+        if (Yii::$app->user->isGuest) {
+            return $this->redirect('/');
+        }
+
+        $post = Post::getPostById($id);
+        if ($post == null) {
+            $this->redirect('/');
+        }
+
+        $this->redirect('/');
+    }
+
+    public function actionPostComment()
+    {
+        $comment = new Comment();
+        if ($comment->load(Yii::$app->request->post())) {
+            $comment->post_id =
+            if ($comment->save())
+        }
     }
 }

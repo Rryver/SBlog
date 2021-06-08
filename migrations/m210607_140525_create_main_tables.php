@@ -13,12 +13,6 @@ class m210607_140525_create_main_tables extends Migration
      */
     public function Up()
     {
-//        $tableOptions = null;
-//        if ($this->db->driverName === 'mysql') {
-//            // http://stackoverflow.com/questions/766809/whats-the-difference-between-utf8-general-ci-and-utf8-unicode-ci
-//            $tableOptions = 'CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB';
-//        }
-
         $this->createTable('post', [
             'id' => Schema::TYPE_PK,
             'user_id' => $this->integer()->notNull(),
@@ -28,7 +22,13 @@ class m210607_140525_create_main_tables extends Migration
             'updated_at' => Schema::TYPE_DATE,
             ]);
 
-        $this->createTable()
+        $this->createTable('comment', [
+            'id' => Schema::TYPE_PK,
+            'username' => $this->string(50)->notNull(),
+            'text' => $this->text()->notNull(),
+            'created_at' => Schema::TYPE_DATE,
+            'updated_at' => Schema::TYPE_DATE,
+        ]);
     }
 
     /**
@@ -37,5 +37,6 @@ class m210607_140525_create_main_tables extends Migration
     public function Down()
     {
         $this->dropTable('post');
+        $this->dropTable('comment');
     }
 }

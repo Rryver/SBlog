@@ -25,7 +25,7 @@ const F_views = F_webDir + 'views/';
 
 function browsersync() {
     browserSync.init({
-        proxy: "localhost/WP-indigo",
+        proxy: "localhost/SBlog/web",
         browser: 'chrome',
         // server: {
         //         //     baseDir: F_webDir

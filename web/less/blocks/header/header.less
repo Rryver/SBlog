@@ -1,0 +1,22 @@
+.header {
+    text-align: center;
+    padding: 45px 0;
+    margin-bottom: 73px;
+
+    &__menu {
+        display: inline-block;
+        float: left;
+    }
+
+    &__logo {
+        .font-heading-2();
+        display: inline-block;
+        color: @color-grey;
+        letter-spacing: .07em;
+
+        &::first-letter {
+            margin-right: 3px;
+            color: @color-grey-3;
+        }
+    }
+}
