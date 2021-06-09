@@ -224,6 +224,7 @@ class SiteController extends Controller
         return $this->redirect(Url::to(['site/post', 'id' => $id]));
     }
 
+    //TODO Доделать
     public function actionPostDelete($id = null)
     {
         if (Yii::$app->user->isGuest) {
@@ -238,12 +239,102 @@ class SiteController extends Controller
         $this->redirect('/');
     }
 
+    //public function actionPostComment()
+
+    /**
+     * @return array|string
+     * error1 - Не задан ID Статьи
+     * error2 - Не удалось загрузить данные модели из $_POST
+     * error3 - Это не AJAX запрос
+     * error4 - Не удалось сохранить коментарий в БД
+     */
     public function actionPostComment()
     {
         $comment = new Comment();
-        if ($comment->load(Yii::$app->request->post())) {
-            $comment->post_id =
-            if ($comment->save())
+        Yii::$app->response->format = Response::FORMAT_JSON;
+
+        if (Yii::$app->request->isAjax && !Yii::$app->request->isPjax) {
+            if ($comment->load(Yii::$app->request->post())) {
+                if (isset($_POST['postId'])) {
+                    $comment->post_id = $_POST['postId'];
+                    if ($comment->save()) {
+                        //Если всё успешно, отправляем ответ с данными
+                        Yii::$app->session->setFlash('success', 'Комментарий отправлен');
+                        return $this->renderAjax('../layouts/_post-comments', [
+                            'comments' => Comment::getCommentsByPostId($comment->post_id),
+                        ]);
+                    } else {
+                        Yii::$app->session->setFlash('error', 'Ошибка.');
+                        return [
+                            "data" => null,
+                            "error" => "error4",
+                        ];
+                    }
+                } else {
+                    //Если не задан ID Статьи
+                    return [
+                        "data" => null,
+                        "error" => "error1"
+                    ];
+                }
+            } else {
+                // Если нет, отправляем ответ с сообщением об ошибке
+                return [
+                    "data" => null,
+                    "error" => "error2"
+                ];
+            }
+        } else {
+            // Если это не AJAX запрос, отправляем ответ с сообщением об ошибке
+            return [
+                "data" => null,
+                "error" => "error3"
+            ];
         }
+    }
+
+    public function actionCommentDelete() {
+//        if (Yii::$app->user->isGuest || !Yii::$app->user->identity->isAdmin) {
+//            return $this->goHome();
+//        }
+
+        Yii::$app->response->format = Response::FORMAT_JSON;
+
+
+
+        if (Yii::$app->request->isAjax && !Yii::$app->request->isPjax) {
+            if (isset($_POST['commentId'])) {
+                $commentId = $_POST['commentId'];
+            } else {
+                return [
+                    "comments" => null,
+                    "error" => "Не задан ID коментария"
+                ];
+            }
+            $comment = Comment::getCommentById($commentId);
+            if ($comment->delete()) {
+                Yii::$app->session->setFlash('success', 'Комментарий удален');
+                return $this->renderAjax('../layouts/_post-comments', [
+                    'comments' => Comment::getCommentsByPostId($comment->post_id),
+                ]);
+            } else {
+                // Если произошла ошибка удаления
+                Yii::$app->session->setFlash('error', 'Не удалось удалить коментарий. Попробуйте обновить страницу');
+                return [
+                    "comments" => null,
+                    "error" => "Ошибка удаления"
+                ];
+            }
+        } else {
+            // Если это не AJAX запрос, отправляем ответ с сообщением об ошибке
+            return [
+                "comments" => null,
+                "error" => "Ошибка запроса"
+            ];
+        }
+    }
+
+    public function actionCommentEdit() {
+
     }
 }

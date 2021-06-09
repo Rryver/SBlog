@@ -199,7 +199,26 @@ body {
           transform: scale(0.98);
 }
 .btn-common_danger {
+  font-size: 16px;
+  line-height: 1.5em;
+  background: #1A1A1A;
+  padding: 11px 30px;
+  color: #FFFFFF;
+  border: none;
+  outline: none;
   background: #F25555;
+}
+.btn-common_danger:hover {
+  cursor: pointer;
+  background: #3F51B5;
+  color: #FFFFFF;
+}
+.btn-common_danger:focus {
+  background: #3F51B5;
+  color: #FFFFFF;
+  -webkit-transform: scale(0.98);
+      -ms-transform: scale(0.98);
+          transform: scale(0.98);
 }
 .btn-common_danger:hover {
   background: #d14b4b;
@@ -386,6 +405,9 @@ body {
 .post-editor__title {
   text-align: center;
 }
+.conversation__title {
+  margin-bottom: 20px;
+}
 .form-post__label {
   display: block;
 }
@@ -421,13 +443,21 @@ body {
   margin-bottom: 0;
   border-bottom: none;
 }
+.comments__comment-edit {
+  margin-top: 15px;
+}
 .card-comment__date {
   display: inline-block;
   margin-left: 15px;
+  float: right;
 }
 .card-comment__content {
   margin-top: 17px;
 }
+.comment-edit__btn {
+  padding: 3px 10px;
+}
 .footer {
   padding: 45px 0;
+  border-top: 1px solid #F0F0F0;
 }

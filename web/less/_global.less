@@ -89,18 +89,21 @@ body {
 		transform: scale(0.98);
 	}
 
-	&_danger {
-		background: @color-error;
-		
-		&:hover {
-			background: @color-error-dark;
-		}
 
-		&:focus {
-			background: @color-error-dark;
-			color: @color-white;
-			transform: scale(0.98);
-		}
+}
+
+.btn-common_danger {
+	.btn-common();
+	background: @color-error;
+
+	&:hover {
+		background: @color-error-dark;
+	}
+
+	&:focus {
+		background: @color-error-dark;
+		color: @color-white;
+		transform: scale(0.98);
 	}
 }
 

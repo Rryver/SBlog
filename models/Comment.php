@@ -70,4 +70,10 @@ class Comment extends ActiveRecord
             ->orderBy(['id' => SORT_DESC])
             ->all();
     }
+
+    public static function getCommentById($id = null) {
+        if ($id != null) {
+            return static::findOne(['id' => $id]);
+        }
+    }
 }
