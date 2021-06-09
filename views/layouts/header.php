@@ -31,8 +31,9 @@ $linkTemplate = '<a class="menu__link" href="{url}">{label}</a>';
                 'linkTemplate' => $linkTemplate,
                 'items' => [
                     ['label' => 'Home', 'url' => ['site/index']],
-                    ['label' => 'Posts', 'url' => ['site/posts']],
-                    ['label' => 'Users', 'url' => ['site/users']],
+                    ['label' => 'Posts', 'url' => ['admin/posts']],
+                    ['label' => 'Comments', 'url' => ['admin/comments']],
+                    ['label' => 'Users', 'url' => ['admin/users']],
                 ],
                 'activeCssClass' => 'menu__item_active',
             ]);

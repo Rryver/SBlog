@@ -144,6 +144,11 @@ body {
   margin: 0 auto;
   padding: 0 15px;
 }
+.container-admin {
+  max-width: 1470px;
+  margin: 0 auto;
+  padding: 0 15px;
+}
 .link-text {
   color: #555555;
 }
