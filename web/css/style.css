@@ -244,6 +244,17 @@ body {
   border-radius: 50%;
   margin-right: 12px;
 }
+.form-edit__label {
+  display: block;
+}
+.form-edit__input {
+  display: block;
+  min-width: 100%;
+  max-width: 100%;
+}
+.form-edit__input_textarea {
+  min-height: 400px;
+}
 .header {
   text-align: center;
   padding: 45px 0;
@@ -410,6 +421,15 @@ body {
 .post-editor__title {
   text-align: center;
 }
+.post-editor__title:first-child {
+  margin-bottom: 40px;
+}
+.post-editor__form-post {
+  margin-top: 15px;
+}
+.post-editor__link {
+  float: right;
+}
 .conversation__title {
   margin-bottom: 20px;
 }
@@ -461,6 +481,23 @@ body {
 }
 .comment-edit__btn {
   padding: 3px 10px;
+}
+.view-comments__title {
+  display: block;
+  margin-bottom: 20px;
+}
+.view-comments__gridview {
+  display: block;
+  margin-top: 20px;
+}
+.view-comments__btn {
+  display: block;
+  text-align: center;
+  padding: 3px 8px;
+  margin-bottom: 5px;
+}
+.view-comments__btn:last-child {
+  margin-bottom: 0;
 }
 .footer {
   padding: 45px 0;

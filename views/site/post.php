@@ -43,10 +43,11 @@ use yii\widgets\Pjax;
           </p>
         </div>
 
-          <?php if ($post->user_id == Yii::$app->user->id) { ?>
+          <?php if ($post->user_id == Yii::$app->user->id || Yii::$app->user->identity->isAdmin) { ?>
             <a class="post__btn btn-link btn-common" href="<?= Url::to(['site/post-edit', 'id' => $post->id]) ?>">Edit
               post</a>
-              <?= Html::a("Delete post",
+              <?= Html::a(
+                  "Delete post",
                   Url::to(['site/post-delete', 'id' => $post->id]),
                   [
                       'class' => 'post__btn post__btn_pull-right btn-link btn-common btn-common_danger',
@@ -66,7 +67,6 @@ use yii\widgets\Pjax;
                 'comments' => $comments,
             ]) ?>
         </div>
-
 
 
       </div>

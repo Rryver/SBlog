@@ -215,7 +215,7 @@ class SiteController extends Controller
             return $this->redirect(Url::to(['site/post', 'id' => $post->id]));
         }
 
-        if ($post->user_id == Yii::$app->user->id) {
+        if ($post->user_id == Yii::$app->user->id || Yii::$app->user->identity->isAdmin) {
             return $this->render('post-edit', [
                 'post' => $post,
             ]);
@@ -224,22 +224,43 @@ class SiteController extends Controller
         return $this->redirect(Url::to(['site/post', 'id' => $id]));
     }
 
-    //TODO Доделать
+
+    /**
+     * @param integer $id
+     * @return Response
+     * @throws \Throwable
+     * @throws \yii\db\StaleObjectException
+     */
     public function actionPostDelete($id = null)
     {
-        if (Yii::$app->user->isGuest) {
+        if (Yii::$app->user->isGuest ) {
             return $this->redirect('/');
         }
 
         $post = Post::getPostById($id);
         if ($post == null) {
-            $this->redirect('/');
+            Yii::$app->session->setFlash('error', 'Статья не найдена');
+            return $this->goHome();
         }
 
+        if (Yii::$app->user->identity->isAdmin || Yii::$app->user->id == $post->user_id) {
+            $postId = $post->id;
+            if ($post->delete()) {
+                if (Comment::deleteAll(['post_id' => $postId])) {
+                    Yii::$app->session->setFlash('success', 'Статья удалена');
+                    return $this->goHome();
+                } else {
+                    Yii::$app->session->setFlash('warning', 'Статья удалена. При удалении коментариев возникла ошибка.');
+                    return $this->goHome();
+                }
+            } else {
+                Yii::$app->session->setFlash('error', 'Ошибка при удалении статьи');
+                return $this->redirect(Url::to(['site/post', 'id' => $postId]));
+            }
+        }
         $this->redirect('/');
     }
 
-    //public function actionPostComment()
 
     /**
      * @return array|string

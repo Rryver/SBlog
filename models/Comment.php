@@ -33,6 +33,7 @@ class Comment extends ActiveRecord
     {
         return [
             'id' => 'ID',
+            'post_id' => 'ID Сатьи',
             'username' => 'Автор',
             'text' => 'Коментарий',
             'created_at' => 'Время создания',

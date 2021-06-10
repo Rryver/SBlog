@@ -8,9 +8,11 @@
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
+$previousUrl = null;
+
 ?>
 
-<div class="comment-editor modal-window">
+<div class="comment-editor">
 
     <?php $form = ActiveForm::begin([
         'options' => 'comment-editor__form',

@@ -5,6 +5,7 @@
  */
 
 use app\widgets\Alert;
+use yii\helpers\Url;
 
 ?>
 
@@ -30,9 +31,9 @@ use app\widgets\Alert;
         </div>
           <?php if (Yii::$app->user->identity->isAdmin) { ?>
           <div class="comments__comment-edit comment-edit" commentid="<?= $item->id ?>">
-            <button class="comment-edit__btn comment-edit__btn_edit btn-common">Редактировать</button>
             <button class="comment-edit__btn comment-edit__btn_delete btn-common_danger"
-                    action="<?= \yii\helpers\Url::to(['site/comment-delete']) ?>">Удалить</button>
+            action="<?= Url::to(['site/comment-delete']) ?>">Удалить</button>
+            <button class="comment-edit__btn comment-edit__btn_edit btn-common">Редактировать</button>
           </div>
           <?php } ?>
         </li>

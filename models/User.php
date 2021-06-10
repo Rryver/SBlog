@@ -240,4 +240,15 @@ class User extends ActiveRecord implements IdentityInterface
     public static function getUsernameById($id) {
         return static::findOne(['id' => $id])->username;
     }
+
+    public static function getAllUserStatus() {
+//        const STATUS_DELETED = 0;
+//        const STATUS_INACTIVE = 9;
+//        const STATUS_ACTIVE = 10;
+        return [
+            'STATUS_DELETED' => 0,
+            'STATUS_INACTIVE' => 9,
+            'STATUS_ACTIVE' => 10,
+        ];
+    }
 }

@@ -69,6 +69,11 @@ class Post extends ActiveRecord
         return static::findOne(['id' => $id]);
     }
 
+    public static function getPostTitleById($id)
+    {
+        return static::findOne(['id' => $id])->title;
+    }
+
     public static function getAll()
     {
         return static::find()->all();

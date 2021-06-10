@@ -5,6 +5,7 @@
  */
 
 use app\models\Post;
+use app\widgets\Alert;
 use yii\widgets\LinkPager;
 use yii\widgets\Pjax;
 use yii\helpers\Url;
@@ -16,6 +17,7 @@ $this->title = 'My Yii Application';
 <div class="site-index">
   <section class="posts">
     <div class="container">
+        <?= Alert::widget() ?>
 
         <?php Pjax::begin() ?>
       <ul class="posts__list">

@@ -6,12 +6,10 @@
  */
 
 $isEditMode = isset($post->id) ? true : false;
-
-$postTitle = isset($post->title) ? ' ' . $post->title : '';
-$this->title = ($isEditMode) ? 'Редактировать пост' : 'Новый пост';
-$this->title = $this->title . $postTitle;
+$this->title = ($isEditMode) ? 'Редактирование статьи' : 'Новый пост';
 
 use yii\helpers\Html;
+use yii\helpers\Url;
 use yii\widgets\ActiveForm; ?>
 
 
@@ -19,7 +17,8 @@ use yii\widgets\ActiveForm; ?>
   <section class="post-editor">
     <div class="container">
       <h2 class="post-editor__title font-heading-1"><?= $this->title ?></h2>
-      <div class="split-line"></div>
+      <h2 class="post-editor__title font-heading-2"><?= $post->title ?></h2>
+
 
         <?php $form = ActiveForm::begin([
             'options' => ['class' => 'post-editor__form-post form-post'],
@@ -34,7 +33,8 @@ use yii\widgets\ActiveForm; ?>
         </div>
       </div>
 
-        <?= Html::submitButton("Save", ['class' => 'btn-common form-post__btn-submit']) ?>
+        <?= Html::submitButton("Сохранить", ['class' => 'btn-common form-post__btn-submit']) ?>
+      <a class="post-editor__link btn-common btn-common_danger" href="<?= Url::to(['site/post', 'id' => $post->id]) ?>">Отмена</a>
         <?php ActiveForm::end(); ?>
     </div>
   </section>
