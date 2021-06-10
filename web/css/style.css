@@ -211,6 +211,7 @@ body {
   color: #FFFFFF;
   border: none;
   outline: none;
+  display: inline-block;
   background: #F25555;
 }
 .btn-common_danger:hover {
@@ -251,9 +252,27 @@ body {
   display: block;
   min-width: 100%;
   max-width: 100%;
+  padding: 8px 10px;
 }
 .form-edit__input_textarea {
   min-height: 400px;
+}
+.admin-panel__title {
+  display: block;
+  margin-bottom: 20px;
+}
+.admin-panel__gridview {
+  display: block;
+  margin-top: 20px;
+}
+.admin-gridview__btn {
+  display: block;
+  text-align: center;
+  padding: 3px 8px;
+  margin-bottom: 5px;
+}
+.admin-gridview__btn:last-child {
+  margin-bottom: 0;
 }
 .header {
   text-align: center;
@@ -297,7 +316,7 @@ body {
 }
 .menu__item {
   display: inline-block;
-  margin-right: 45px;
+  margin-right: 20px;
 }
 .menu__item:last-child {
   margin-right: 0;
@@ -440,6 +459,7 @@ body {
   display: block;
   min-width: 100%;
   max-width: 100%;
+  padding: 8px 10px;
 }
 .form-post__input_textarea {
   min-height: 400px;
@@ -481,23 +501,6 @@ body {
 }
 .comment-edit__btn {
   padding: 3px 10px;
-}
-.view-comments__title {
-  display: block;
-  margin-bottom: 20px;
-}
-.view-comments__gridview {
-  display: block;
-  margin-top: 20px;
-}
-.view-comments__btn {
-  display: block;
-  text-align: center;
-  padding: 3px 8px;
-  margin-bottom: 5px;
-}
-.view-comments__btn:last-child {
-  margin-bottom: 0;
 }
 .footer {
   padding: 45px 0;

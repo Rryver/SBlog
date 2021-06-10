@@ -8,8 +8,13 @@ use yii\widgets\Menu;
 use app\models\User;
 
 
+
 $isGuest = Yii::$app->user->isGuest;
-$isAdmin = true;
+if ($isGuest) {
+  $isAdmin = 0;
+} else {
+    $isAdmin = Yii::$app->user->identity->isAdmin;
+}
 
 
 $linkTemplate = '<a class="menu__link" href="{url}">{label}</a>';
@@ -20,7 +25,7 @@ $linkTemplate = '<a class="menu__link" href="{url}">{label}</a>';
   <div class="header__container">
     <nav class="header__menu">
         <?php
-        if ($isAdmin) {
+//        if ($isAdmin) {
             echo Menu::widget([
                 'options' => [
                     'class' => 'menu__list menu__list_pull-left',
@@ -31,13 +36,12 @@ $linkTemplate = '<a class="menu__link" href="{url}">{label}</a>';
                 'linkTemplate' => $linkTemplate,
                 'items' => [
                     ['label' => 'Home', 'url' => ['site/index']],
-                    ['label' => 'Posts', 'url' => ['admin/posts']],
-                    ['label' => 'Comments', 'url' => ['admin/comments']],
-                    ['label' => 'Users', 'url' => ['admin/users']],
+                    ['label' => 'Comments', 'url' => ['admin/comments'], 'visible' => $isAdmin],
+                    ['label' => 'Users', 'url' => ['admin/users'], 'visible' => $isAdmin],
                 ],
                 'activeCssClass' => 'menu__item_active',
             ]);
-        }
+//        }
         ?>
     </nav>
 

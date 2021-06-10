@@ -19,14 +19,14 @@ use yii\widgets\Pjax;
   <section class="view-comments">
     <div class="container-admin">
 
-      <h2 class="view-comments__title font-heading-1s">Коментарии</h2>
+      <h2 class="view-comments__title admin-panel__title font-heading-1s">Коментарии</h2>
 
         <?= \app\widgets\Alert::widget() ?>
 
         <?php Pjax::begin() ?>
         <?= GridView::widget([
             'dataProvider' => $dataProvider,
-            'options' => ['class' => 'view-comments__gridview'],
+            'options' => ['class' => 'view-comments__gridview admin-panel__gridview'],
             'columns' => [
                 ['class' => 'yii\grid\SerialColumn'],
                 'username',
@@ -59,17 +59,17 @@ use yii\widgets\Pjax;
                     'buttons' => [
                         'update' => function ($url, $comment) {
                             return Html::a(
-                                'Удалить',
-                                ['admin/comment-delete', 'id' => $comment->id],
-                                [
-                                    'class' => 'view-comments__btn view-comments__btn_delete btn-common_danger',
-                                ]);
+                                'Редактировать',
+                                ['admin/comment-edit', 'id' => $comment->id],
+                                ['class' => 'admin-gridview__btn btn-common']);
                         },
                         'delete' => function ($url, $comment) {
                             return Html::a(
-                                'Редактировать',
-                                ['admin/comment-edit', 'id' => $comment->id],
-                                ['class' => ' view-comments__btn view-comments__btn_edit btn-common']);
+                                'Удалить',
+                                ['admin/comment-delete', 'id' => $comment->id],
+                                [
+                                    'class' => 'admin-gridview__btn btn-common_danger',
+                                ]);
                         },
                     ],
                     'contentOptions' => ['style' => 'width: 100px'],

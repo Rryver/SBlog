@@ -203,15 +203,12 @@ class SiteController extends Controller
         }
 
         $post = Post::getPostById($id);
-        if ($post == null) {
+        if (!isset($post)) {
             $this->redirect('/');
         }
 
         // if save changes
         if ($post->load(Yii::$app->request->post()) && $post->save()) {
-//            return $this->render('post-editor', [
-//                'post' => $post,
-//            ]);
             return $this->redirect(Url::to(['site/post', 'id' => $post->id]));
         }
 
@@ -246,13 +243,14 @@ class SiteController extends Controller
         if (Yii::$app->user->identity->isAdmin || Yii::$app->user->id == $post->user_id) {
             $postId = $post->id;
             if ($post->delete()) {
+                Yii::$app->session->setFlash('success', 'Статья удалена');
                 if (Comment::deleteAll(['post_id' => $postId])) {
-                    Yii::$app->session->setFlash('success', 'Статья удалена');
-                    return $this->goHome();
-                } else {
-                    Yii::$app->session->setFlash('warning', 'Статья удалена. При удалении коментариев возникла ошибка.');
                     return $this->goHome();
                 }
+//                else {
+//                    Yii::$app->session->setFlash('warning', 'Статья удалена. При удалении коментариев возникла ошибка.');
+//                    return $this->goHome();
+//                }
             } else {
                 Yii::$app->session->setFlash('error', 'Ошибка при удалении статьи');
                 return $this->redirect(Url::to(['site/post', 'id' => $postId]));

@@ -67,7 +67,7 @@ class User extends ActiveRecord implements IdentityInterface
         return [
             //['status', 'default', 'value' => self::STATUS_INACTIVE],
             ['status', 'default', 'value' => self::STATUS_ACTIVE],
-            ['status', 'in', 'range' => [self::STATUS_ADMIN, self::STATUS_ACTIVE, self::STATUS_INACTIVE, self::STATUS_DELETED]],
+            ['status', 'in', 'range' => [self::STATUS_ACTIVE, self::STATUS_INACTIVE, self::STATUS_DELETED]],
         ];
     }
 
@@ -122,7 +122,8 @@ class User extends ActiveRecord implements IdentityInterface
      * @param string $token password reset token
      * @return static|null
      */
-    public static function findByPasswordResetToken($token) {
+    public static function findByPasswordResetToken($token)
+    {
         if (!static::isPasswordResetTokenValid($token)) {
             return null;
         }
@@ -139,7 +140,8 @@ class User extends ActiveRecord implements IdentityInterface
      * @param string $token verify email token
      * @return static|null
      */
-    public static function findByVerificationToken($token) {
+    public static function findByVerificationToken($token)
+    {
         return static::findOne([
             'verification_token' => $token,
             'status' => self::STATUS_INACTIVE,
@@ -152,12 +154,13 @@ class User extends ActiveRecord implements IdentityInterface
      * @param string $token password reset token
      * @return bool
      */
-    public static function isPasswordResetTokenValid($token) {
+    public static function isPasswordResetTokenValid($token)
+    {
         if (empty($token)) {
             return false;
         }
 
-        $timestamp = (int) substr($token, strpos($token, '_') + 1);
+        $timestamp = (int)substr($token, strpos($token, '_') + 1);
         $expire = Yii::$app->params['user.passwordResetTokenExpire'];
         return $timestamp + $expire >= time();
     }
@@ -204,51 +207,72 @@ class User extends ActiveRecord implements IdentityInterface
      *
      * @param string $password
      */
-    public function setPassword($password) {
+    public function setPassword($password)
+    {
         $this->password_hash = Yii::$app->security->generatePasswordHash($password);
     }
 
     /**
      * Generates "remember me" authentication key
      */
-    public function generateAuthKey() {
+    public function generateAuthKey()
+    {
         $this->auth_key = Yii::$app->security->generateRandomString();
     }
 
     /**
      * Generates new password reset token
      */
-    public function generatePasswordResetToken() {
+    public function generatePasswordResetToken()
+    {
         $this->password_reset_token = Yii::$app->security->generateRandomString() . '_' . time();
     }
 
     /**
      * Generates new token for email verification
      */
-    public function generateEmailVerificationToken() {
+    public function generateEmailVerificationToken()
+    {
         $this->verification_token = Yii::$app->security->generateRandomString() . '_' . time();
     }
 
     /**
      * Removes password reset token
      */
-    public function removePasswordResetToken() {
+    public function removePasswordResetToken()
+    {
         $this->password_reset_token = null;
     }
 
 
-    public static function getUsernameById($id) {
+    public static function getUsernameById($id)
+    {
         return static::findOne(['id' => $id])->username;
     }
 
-    public static function getAllUserStatus() {
+    public static function getUserStatus($key = null)
+    {
 //        const STATUS_DELETED = 0;
 //        const STATUS_INACTIVE = 9;
 //        const STATUS_ACTIVE = 10;
+        $statuses = [
+                self::STATUS_ACTIVE => 'Активен',
+                self::STATUS_INACTIVE => 'Деактивирован',
+                self::STATUS_DELETED => 'Удален',
+            ];
+
+        return isset($key) ? $statuses[$key] : $statuses;
+    }
+
+    public function isAdminAsString()
+    {
+        return $this->isAdmin ? 'Администратор' : 'Не администратор';
+    }
+
+    public static function getisAdminAsMap() {
         return [
-            'STATUS_DELETED' => 0,
-            'STATUS_INACTIVE' => 9,
-            'STATUS_ACTIVE' => 10,
+            1 => 'Администратор',
+            0 => 'Не администратор',
         ];
     }
 }

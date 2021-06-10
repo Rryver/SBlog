@@ -100,6 +100,7 @@ body {
 
 .btn-common_danger {
 	.btn-common();
+	display: inline-block;
 	background: @color-error;
 
 	&:hover {
@@ -136,10 +137,37 @@ body {
 		display: block;
 		min-width: 100%;
 		max-width: 100%;
+		padding: 8px 10px;
 
 
 		&_textarea {
 			min-height: 400px;
+		}
+	}
+}
+
+.admin-panel {
+
+	&__title {
+		display: block;
+		margin-bottom: 20px;
+	}
+
+	&__gridview {
+		display: block;
+		margin-top: 20px;
+	}
+}
+
+.admin-gridview {
+	&__btn {
+		display: block;
+		text-align: center;
+		padding: 3px 8px;
+		margin-bottom: 5px;
+
+		&:last-child {
+			margin-bottom: 0;
 		}
 	}
 }

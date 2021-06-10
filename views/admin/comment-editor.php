@@ -13,11 +13,11 @@ $previousUrl = null;
 ?>
 
 <div class="comment-editor">
+  <div class="container">
 
     <?php $form = ActiveForm::begin([
-        'options' => 'comment-editor__form',
-        'action' => ['site/comment-edit'],
-        'method' => 'post'
+        'options' => ['class' => 'comment-editor__form'],
+        'action' => ['admin/comment-edit', 'id' => $comment->id],
     ]) ?>
 
     <?= $form->field($comment, 'text')
@@ -25,7 +25,9 @@ $previousUrl = null;
     <?= $form->field($comment, 'username')
         ->textInput(['class' => 'form-comment__input', 'placeholder' => 'Имя автора']) ?>
 
-    <?= Html::button('Отмена', ['class' => 'btn-common']) ?>
     <?= Html::submitButton('Сохранить', ['class' => 'btn-common']) ?>
+    <?= Html::a('Отмена', ['admin/comments'], ['class' => 'btn-common_danger']) ?>
     <?php ActiveForm::end() ?>
+
+  </div>
 </div>

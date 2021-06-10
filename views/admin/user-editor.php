@@ -12,24 +12,26 @@ use yii\widgets\ActiveForm;
 ?>
 
 <div class="admin-user-editor">
-    <div class="user-editor">
-        <div class="container">
+  <div class="user-editor">
+    <div class="container">
+      <h2 class="user-editor__title admin-panel__title font-heading-1s">Редактирование пользователя</h2>
 
+        <?php $form = ActiveForm::begin([
+            'options' => ['class' => 'user-editor__form'],
+            'action' => ['admin/user-edit', 'id' => $user->id],
+        ]) ?>
 
-            <?php $form = ActiveForm::begin([
-                'options' => 'user-editor__form',
-                'action' => ['admin/user-edit'],
-            ]) ?>
+        <?= $form->field($user, 'username')->textInput(['class' => 'form-edit__input']) ?>
+        <?= $form->field($user, 'email')->textInput(['class' => 'form-edit__input']) ?>
+        <?= $form->field($user, 'status')->dropDownList(User::getUserStatus(), ['class' => 'form-edit__input']) ?>
+        <?= $form->field($user, 'isAdmin')->dropDownList(User::getisAdminAsMap(), ['class' => 'form-edit__input']) ?>
 
-            <?= $form->field($user, 'username')->textInput(['class' => 'form-edit__input']) ?>
-            <?= $form->field($user, 'email')->textInput(['class' => 'form-edit__input']) ?>
-            <?= $form->field($user, 'status')->dropDownList(User::getAllUserStatus(), ['class' => 'form-edit__input']) ?>
-            <?= $form->field($user, 'isAdmin')->dropDownList(['true' => 1, 'false' => 0]) ?>
+        <?= Html::submitButton('Сохранить', ['class' => 'btn-common']) ?>
+        <?= Html::a('Отмена', ['admin/users'], ['class' => 'btn-common btn-common_danger']) ?>
+        <?php ActiveForm::end() ?>
 
-            <?= Html::submitButton('Сохранить', ['btn-common']) ?>
-            <?php ActiveForm::end() ?>
-        </div>
     </div>
+  </div>
 </div>
 
 
