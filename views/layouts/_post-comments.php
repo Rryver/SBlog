@@ -37,8 +37,9 @@ if (Yii::$app->user->isGuest) {
           <?php if ($isAdmin) { ?>
           <div class="comments__comment-edit comment-edit" commentid="<?= $item->id ?>">
             <button class="comment-edit__btn comment-edit__btn_delete btn-common_danger"
-            action="<?= Url::to(['site/comment-delete']) ?>">Удалить</button>
-            <button class="comment-edit__btn comment-edit__btn_edit btn-common">Редактировать</button>
+                    action="<?= Url::to(['site/comment-delete']) ?>">Удалить</button>
+            <a class="comment-edit__btn comment-edit__btn_edit btn-common"
+               href="<?= Url::to(['admin/comment-edit', 'id' => $item->id, 'postId' => $item->post_id]) ?>">Редактировать</a>
           </div>
           <?php } ?>
         </li>

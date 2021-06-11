@@ -35,9 +35,9 @@ $linkTemplate = '<a class="menu__link" href="{url}">{label}</a>';
                 ],
                 'linkTemplate' => $linkTemplate,
                 'items' => [
-                    ['label' => 'Home', 'url' => ['site/index']],
-                    ['label' => 'Comments', 'url' => ['admin/comments'], 'visible' => $isAdmin],
-                    ['label' => 'Users', 'url' => ['admin/users'], 'visible' => $isAdmin],
+                    ['label' => 'Главная', 'url' => ['site/index']],
+                    ['label' => 'Коментарии', 'url' => ['admin/comments'], 'visible' => $isAdmin],
+                    ['label' => 'Пользователи', 'url' => ['admin/users'], 'visible' => $isAdmin],
                 ],
                 'activeCssClass' => 'menu__item_active',
             ]);
@@ -57,9 +57,9 @@ $linkTemplate = '<a class="menu__link" href="{url}">{label}</a>';
           ],
           'linkTemplate' => $linkTemplate,
           'items' => [
-              ['label' => 'Signup', 'url' => ['site/signup'], 'visible' => $isGuest],
+              ['label' => 'Зарегистрироваться', 'url' => ['site/signup'], 'visible' => $isGuest],
               $isGuest ? (
-                  ['label' => 'Login', 'url' => ['site/login']]
+                  ['label' => 'Войти', 'url' => ['site/login']]
               ) : ['label' => 'logout',
                   'url' => ['site/logout'],
                   'template' => '<a class="menu__link" href="{url}" data-method="post">{label}</a>'

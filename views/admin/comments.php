@@ -72,6 +72,7 @@ use yii\widgets\Pjax;
                                 ['admin/comment-delete', 'id' => $comment->id],
                                 [
                                     'class' => 'admin-gridview__btn btn-common_danger',
+                                    'data' => ['confirm' => 'Вы уверены, что хотите удалить коментраий?'],
                                 ]);
                         },
                     ],

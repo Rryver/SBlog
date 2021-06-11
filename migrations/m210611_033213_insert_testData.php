@@ -36,26 +36,8 @@ class m210611_033213_insert_testData extends Migration
             'isAdmin' => 0,
         ]);
 
-        for ($i = 0; $i < 3; $i++) {
-            $this->insert('post', [
-                'user_id' => 1,
-                'title' => 'Создание галереи изображений на CSS сетке (с эффектом размытия и медиа запросами)',
-                'content' => '
-                В этом уроке мы возьмём пачку ссылок на обычные миниатюры изображений и превратим их в отзывчивую галерею на CSS сетке, с эффектом размытия при наведении. А ещё мы применим крутой CSS трюк, чтобы это всё работало на тач-скринах.
-                Вот что мы будем создавать:
-                Немного фона
-                Недавно, Рэйчел МакКоллин написала урок, объясняющий то, как в тему WordPress добавить галерею на основе ссылок на изображения.
 
-                WORDPRESS
-                Create a WordPress Image Gallery: Code the Plugin
-                Rachel McCollin
-                Эти ссылки действуют в качестве навигации для дочерних страниц, не зависимо от того на какой странице пользователь (или какую страницу вы выберите), а итоговый плагин выводит что-то типа этого:',
-                'created_at' => '2021-06-03',
-                'updated_at' => '2021-06-03',
-            ]);
-        }
-
-        for ($i = 0; $i < 10; $i++) {
+        for ($i = 0; $i < 5; $i++) {
             $this->insert('post', [
                 'user_id' => 2,
                 'title' => 'CSS Gallery Examples 2020',
@@ -103,21 +85,29 @@ class m210611_033213_insert_testData extends Migration
             ]);
         }
 
-
-        $this->insert('comment', [
-            'username' => 'Cody',
-            'text' => 'Как человек, которому нравится использовать Twitter лично и по-прежнему использует его в качестве жизнеспособной платформы, я рад поделиться десятью лучшими плагинами виджета WordPress Twitter на CodeCanyon и загрузить их бесплатно.',
-            'created_at' => '2021-06-09 18:59:06',
-            'updated_at' => '2021-06-09 18:59:06',
-            'post_id' => 1,
-        ]);
-        $this->insert('comment', [
-            'username' => 'Dane',
-            'text' => 'Tweetlab - слайдер Twitter & Usercard для WordPress - это красиво оформленный виджет Twitter WordPress.',
-            'created_at' => '2021-06-10 18:59:06',
-            'updated_at' => '2021-06-10 18:59:06',
-            'post_id' => 1,
-        ]);
+        for ($i = 0; $i < 5; $i++) {
+            $this->insert('comment', [
+                'username' => 'Cody',
+                'text' => 'Как человек, которому нравится использовать Twitter лично и по-прежнему использует его в качестве жизнеспособной платформы, я рад поделиться десятью лучшими плагинами виджета WordPress Twitter на CodeCanyon и загрузить их бесплатно.',
+                'created_at' => '2021-06-09 18:59:06',
+                'updated_at' => '2021-06-09 18:59:06',
+                'post_id' => 1,
+            ]);
+            $this->insert('comment', [
+                'username' => 'Dane',
+                'text' => 'Tweetlab - слайдер Twitter & Usercard для WordPress - это красиво оформленный виджет Twitter WordPress.',
+                'created_at' => '2021-06-10 18:59:06',
+                'updated_at' => '2021-06-10 18:59:06',
+                'post_id' => 1,
+            ]);
+            $this->insert('comment', [
+                'username' => 'Dane',
+                'text' => 'это красиво оформленный виджет Twitter WordPress.',
+                'created_at' => '2021-06-10 18:59:06',
+                'updated_at' => '2021-06-10 18:59:06',
+                'post_id' => 2,
+            ]);
+        }
 
     }
 

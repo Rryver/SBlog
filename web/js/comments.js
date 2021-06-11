@@ -26,11 +26,11 @@ $(document).ready(function () {
 });
 
 //Редактирование коментария
-$(document).ready(function () {
-    $(".comment-edit__btn_edit").on("click", function () {
-        alert("qwe");
-    });
-});
+// $(document).ready(function () {
+//     $(".comment-edit__btn_edit").on("click", function () {
+//         alert("qwe");
+//     });
+// });
 
 //Удаление коментария
 $(document).ready(function () {

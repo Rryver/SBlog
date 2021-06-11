@@ -87,7 +87,8 @@ class AdminController extends Controller
         ]);
     }
 
-    public function actionCommentEdit($id = null) {
+    public function actionCommentEdit($id = null, $postId = null)
+    {
         if (Yii::$app->user->isGuest || !Yii::$app->user->identity->isAdmin) {
             return $this->goHome();
         }
@@ -97,21 +98,29 @@ class AdminController extends Controller
         }
 
         $comment = Comment::findOne(['id' => $id]);
-        //if save changes
+        //Если данные формы загружены в модель, то сохраняем в БД
         if ($comment->load(Yii::$app->request->post())) {
             if ($comment->save()) {
                 Yii::$app->session->setFlash('success', 'Коментарий изменен');
-//                return $this->redirect($_SERVER['HTTP_REFERER']);
-                return $this->redirect(['admin/comments']);
             } else {
                 Yii::$app->session->setFlash('error', 'Не удалось изменить коментарий');
-//                return $this->redirect($_SERVER['HTTP_REFERER']);
+            }
+            if ($postId != null) {
+                return $this->redirect(Url::to(['site/post', 'id' => $_GET['postId']]));
+            } else {
                 return $this->redirect(['admin/comments']);
             }
         }
 
+        //Если мы пришли сюда со страницы статьи, будет задан ID статьи и мы сможем вернуться обратно.
+        if (isset($_GET['postId'])) {
+            $postId = $_GET['postId'];
+        } else {
+            $postId = null;
+        }
         return $this->render('comment-editor', [
             'comment' => $comment,
+            'postId' => $postId,
         ]);
     }
 
@@ -126,6 +135,7 @@ class AdminController extends Controller
         }
 
         $comment = Comment::findOne(['id' => $id]);
+        //Если необходимый коментарий найден, то удаляем его
         if (isset($comment)) {
             if ($comment->delete()) {
                 Yii::$app->session->setFlash('success', 'Коментарий успешно удален');
@@ -140,7 +150,8 @@ class AdminController extends Controller
     }
 
 
-    public function actionUsers() {
+    public function actionUsers()
+    {
         if (Yii::$app->user->isGuest || !Yii::$app->user->identity->isAdmin) {
             return $this->goHome();
         }
@@ -157,7 +168,8 @@ class AdminController extends Controller
         ]);
     }
 
-    public function actionUserEdit($id = null) {
+    public function actionUserEdit($id = null)
+    {
         if (Yii::$app->user->isGuest || !Yii::$app->user->identity->isAdmin) {
             return $this->goHome();
         }
@@ -167,9 +179,8 @@ class AdminController extends Controller
         }
 
 
-
         $user = User::findOne(['id' => $id]);
-        //if save changes
+        //Если данные формы загружены в модель, то сохраняем в БД
         if ($user->load(Yii::$app->request->post())) {
             $user->username = $_POST['User']['username'];
             $user->email = $_POST['User']['email'];
@@ -188,8 +199,9 @@ class AdminController extends Controller
         ]);
     }
 
-    //Пользователю будет присвоен параметр удаленный. Запись в базе останется
-    public function actionUserDelete($id = null) {
+    //Пользователю будет присвоен статус 'Удаленный'. Запись в базе останется
+    public function actionUserDelete($id = null)
+    {
         if (Yii::$app->user->isGuest || !Yii::$app->user->identity->isAdmin) {
             return $this->goHome();
         }
@@ -199,6 +211,7 @@ class AdminController extends Controller
         }
 
         $user = User::findOne(['id' => $id]);
+        //Если пользователь найден в БД
         if (isset($user)) {
             $user->status = User::STATUS_DELETED;
             if ($user->save()) {

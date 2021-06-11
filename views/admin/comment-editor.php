@@ -17,7 +17,7 @@ $previousUrl = null;
 
     <?php $form = ActiveForm::begin([
         'options' => ['class' => 'comment-editor__form'],
-        'action' => ['admin/comment-edit', 'id' => $comment->id],
+        'action' => ['admin/comment-edit', 'id' => $comment->id, 'postId' => $postId],
     ]) ?>
 
     <?= $form->field($comment, 'text')
@@ -29,5 +29,7 @@ $previousUrl = null;
     <?= Html::a('Отмена', ['admin/comments'], ['class' => 'btn-common_danger']) ?>
     <?php ActiveForm::end() ?>
 
+
+    <?= var_dump($postId) ?>
   </div>
 </div>

@@ -117,6 +117,7 @@ class SiteController extends Controller
     public function actionSignup()
     {
         $model = new SignupForm();
+        //Если данные формы загружены в модель, то сохраняем в БД
         if ($model->load(Yii::$app->request->post()) && $model->signup()) {
             Yii::$app->session->setFlash('success', 'Thank you for registration. Now you can start writing your own posts.');
             return $this->goHome();
@@ -132,33 +133,35 @@ class SiteController extends Controller
      *
      * @return Response|string
      */
-    public function actionContact()
-    {
-        $model = new ContactForm();
-        if ($model->load(Yii::$app->request->post()) && $model->contact(Yii::$app->params['adminEmail'])) {
-            Yii::$app->session->setFlash('contactFormSubmitted');
-
-            return $this->refresh();
-        }
-        return $this->render('contact', [
-            'model' => $model,
-        ]);
-    }
+//    public function actionContact()
+//    {
+//        $model = new ContactForm();
+//        //Если сохраняем данные в БД
+//        if ($model->load(Yii::$app->request->post()) && $model->contact(Yii::$app->params['adminEmail'])) {
+//            Yii::$app->session->setFlash('contactFormSubmitted');
+//
+//            return $this->refresh();
+//        }
+//        return $this->render('contact', [
+//            'model' => $model,
+//        ]);
+//    }
 
     /**
      * Displays about page.
      *
      * @return string
      */
-    public function actionAbout()
-    {
-        return $this->render('about');
-    }
+//    public function actionAbout()
+//    {
+//        return $this->render('about');
+//    }
 
     public function actionPost($id = null)
     {
         if ($id !== null) {
             $post = Post::getPostById($id);
+            //Если статья найдена
             if (isset($post)) {
                 $comment = new Comment();
                 $comments = Comment::getCommentsByPostId($post->id);
@@ -180,13 +183,10 @@ class SiteController extends Controller
         }
 
         $post = new Post();
-
+        //Если данные формы загружены в модель, то сохраняем в БД
         if ($post->load(Yii::$app->request->post())) {
             $post->user_id = Yii::$app->user->id;
             if ($post->save()) {
-//                return $this->render('post', [
-//                    'post' => $post,
-//                ]);
                 return $this->redirect(Url::to(['site/post', 'id' => $post->id]));
             }
         }
@@ -203,15 +203,17 @@ class SiteController extends Controller
         }
 
         $post = Post::getPostById($id);
+        //Если Статья не найдена в БД
         if (!isset($post)) {
             $this->redirect('/');
         }
 
-        // if save changes
+        //Если сохраняем данные в БД
         if ($post->load(Yii::$app->request->post()) && $post->save()) {
             return $this->redirect(Url::to(['site/post', 'id' => $post->id]));
         }
 
+        //Разрешаем редактировать статью, если ID пользователя совпадает с ID автора или если пользователь является администратором
         if ($post->user_id == Yii::$app->user->id || Yii::$app->user->identity->isAdmin) {
             return $this->render('post-edit', [
                 'post' => $post,
@@ -230,7 +232,7 @@ class SiteController extends Controller
      */
     public function actionPostDelete($id = null)
     {
-        if (Yii::$app->user->isGuest ) {
+        if (Yii::$app->user->isGuest) {
             return $this->redirect('/');
         }
 
@@ -240,13 +242,16 @@ class SiteController extends Controller
             return $this->goHome();
         }
 
-        if (Yii::$app->user->identity->isAdmin || Yii::$app->user->id == $post->user_id) {
+        //Разрешаем удалить статью, если ID пользователя совпадает с ID автора или если пользователь является администратором
+        if (Yii::$app->user->id == $post->user_id || Yii::$app->user->identity->isAdmin) {
             $postId = $post->id;
             if ($post->delete()) {
                 Yii::$app->session->setFlash('success', 'Статья удалена');
                 if (Comment::deleteAll(['post_id' => $postId])) {
                     return $this->goHome();
                 }
+                //TODO Если при удалении статьи не нашлось коментариев, то будет выполнено 'else' и пользователь получит ошибку.
+                //TODO Перед удалением коментариев добавить проверку 'Если в БД есть коментарии к удаляемой статье, то'
 //                else {
 //                    Yii::$app->session->setFlash('warning', 'Статья удалена. При удалении коментариев возникла ошибка.');
 //                    return $this->goHome();
@@ -272,7 +277,9 @@ class SiteController extends Controller
         $comment = new Comment();
         Yii::$app->response->format = Response::FORMAT_JSON;
 
+        //Если обрабатываем ajax запрос
         if (Yii::$app->request->isAjax && !Yii::$app->request->isPjax) {
+            //Если данные формы удачно загружены в модель из пост запроса, то сохраняем коментарий в БД
             if ($comment->load(Yii::$app->request->post())) {
                 if (isset($_POST['postId'])) {
                     $comment->post_id = $_POST['postId'];
@@ -283,6 +290,7 @@ class SiteController extends Controller
                             'comments' => Comment::getCommentsByPostId($comment->post_id),
                         ]);
                     } else {
+                        //Не удалось сохранить коментарий в БД
                         Yii::$app->session->setFlash('error', 'Ошибка.');
                         return [
                             "data" => null,
@@ -297,14 +305,14 @@ class SiteController extends Controller
                     ];
                 }
             } else {
-                // Если нет, отправляем ответ с сообщением об ошибке
+                //Не удалось загрузить данные модели из $_POST
                 return [
                     "data" => null,
                     "error" => "error2"
                 ];
             }
         } else {
-            // Если это не AJAX запрос, отправляем ответ с сообщением об ошибке
+            // Если это не AJAX запрос
             return [
                 "data" => null,
                 "error" => "error3"
@@ -312,15 +320,15 @@ class SiteController extends Controller
         }
     }
 
-    public function actionCommentDelete() {
-//        if (Yii::$app->user->isGuest || !Yii::$app->user->identity->isAdmin) {
-//            return $this->goHome();
-//        }
+    public function actionCommentDelete()
+    {
+        if (Yii::$app->user->isGuest || !Yii::$app->user->identity->isAdmin) {
+            return $this->goHome();
+        }
 
         Yii::$app->response->format = Response::FORMAT_JSON;
 
-
-
+        //Если обрабатываем ajax запрос
         if (Yii::$app->request->isAjax && !Yii::$app->request->isPjax) {
             if (isset($_POST['commentId'])) {
                 $commentId = $_POST['commentId'];
@@ -331,6 +339,7 @@ class SiteController extends Controller
                 ];
             }
             $comment = Comment::getCommentById($commentId);
+            //Удаляем кментарий
             if ($comment->delete()) {
                 Yii::$app->session->setFlash('success', 'Комментарий удален');
                 return $this->renderAjax('../layouts/_post-comments', [
@@ -345,15 +354,11 @@ class SiteController extends Controller
                 ];
             }
         } else {
-            // Если это не AJAX запрос, отправляем ответ с сообщением об ошибке
+            // Если это не AJAX запрос
             return [
                 "comments" => null,
                 "error" => "Ошибка запроса"
             ];
         }
-    }
-
-    public function actionCommentEdit() {
-
     }
 }
