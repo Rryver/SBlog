@@ -48,8 +48,8 @@ class m210611_033213_insert_testData extends Migration
                 CSS Gallery does not include in the list, feel free to contact us. The best CSS Gallery css collection 
                 is ranked and result in August 2020. You can find free CSS Gallery examples or alternatives to 
                 CSS Gallery also.',
-                'created_at' => '2021-06-05',
-                'updated_at' => '2021-06-05',
+                'created_at' => '2021-06-0' . ($i + 1),
+                'updated_at' => '2021-06-0' . ($i + 1),
             ]);
 
             $this->insert('post', [
@@ -65,8 +65,8 @@ class m210611_033213_insert_testData extends Migration
                 Create a WordPress Image Gallery: Code the Plugin
                 Rachel McCollin
                 Эти ссылки действуют в качестве навигации для дочерних страниц, не зависимо от того на какой странице пользователь (или какую страницу вы выберите), а итоговый плагин выводит что-то типа этого:',
-                'created_at' => '2021-06-03',
-                'updated_at' => '2021-06-03',
+                'created_at' => '2021-06-0' . ($i + 1),
+                'updated_at' => '2021-06-0' . ($i + 1),
             ]);
 
             $this->insert('post', [
@@ -80,8 +80,8 @@ class m210611_033213_insert_testData extends Migration
                     Но Twitter все еще очень активен, и есть еще несколько разработчиков, которые хотят разрабатывать 
                     решения, которые смогут интегрироваться как можно лучше. Даже отмена подсчетов в Twitter была 
                     недостаточной для того, чтобы разработчики не смогли найти обходные пути.',
-                'created_at' => '2021-06-07',
-                'updated_at' => '2021-06-07',
+                'created_at' => '2021-06-0' . ($i + 1),
+                'updated_at' => '2021-06-0' . ($i + 1),
             ]);
         }
 

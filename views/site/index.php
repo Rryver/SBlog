@@ -10,7 +10,6 @@ use yii\widgets\LinkPager;
 use yii\widgets\Pjax;
 use yii\helpers\Url;
 
-$this->title = 'My Yii Application';
 ?>
 
 
@@ -28,7 +27,7 @@ $this->title = 'My Yii Application';
                   <h4 class="card-post__title font-heading-2"><?= $post->title ?></h4>
                 </a>
                 <span class="card-post__date"><?= $post->created_at ?></span>
-                <p class="card-post__text"><?= $post->content ?></p>
+                <p class="card-post__text"><?= $post->getShortTextOfContent() ?></p>
               </div>
             </li>
 

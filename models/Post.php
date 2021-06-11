@@ -92,4 +92,8 @@ class Post extends ActiveRecord
             ->orderBy(['updated_at' => SORT_DESC])
             ->all();
     }
+
+    public function getShortTextOfContent() {
+        return substr($this->content, 0, 400);
+    }
 }
