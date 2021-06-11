@@ -14,6 +14,14 @@ use yii\widgets\ActiveForm;
 use yii\widgets\Pjax;
 
 
+if (Yii::$app->user->isGuest) {
+  $isAdmin = 0;
+} else {
+  $isAdmin = Yii::$app->user->identity->isAdmin;
+}
+
+
+
 ?>
 
 
@@ -43,11 +51,15 @@ use yii\widgets\Pjax;
           </p>
         </div>
 
-          <?php if ($post->user_id == Yii::$app->user->id || Yii::$app->user->identity->isAdmin) { ?>
-            <a class="post__btn btn-link btn-common" href="<?= Url::to(['site/post-edit', 'id' => $post->id]) ?>">Edit
-              post</a>
+          <?php if ($post->user_id == Yii::$app->user->id || $isAdmin) { ?>
               <?= Html::a(
-                  "Delete post",
+                  "Редактировать статью",
+                  Url::to(['site/post-edit', 'id' => $post->id]),
+                  [
+                      'class' => 'post__btn btn-link btn-common',
+                  ]) ?>
+              <?= Html::a(
+                  "Удалить статью",
                   Url::to(['site/post-delete', 'id' => $post->id]),
                   [
                       'class' => 'post__btn post__btn_pull-right btn-link btn-common btn-common_danger',

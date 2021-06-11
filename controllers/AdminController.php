@@ -101,12 +101,12 @@ class AdminController extends Controller
         if ($comment->load(Yii::$app->request->post())) {
             if ($comment->save()) {
                 Yii::$app->session->setFlash('success', 'Коментарий изменен');
-                return $this->redirect($_SERVER['HTTP_REFERER']);
-//                return $this->redirect(['admin/comments']);
+//                return $this->redirect($_SERVER['HTTP_REFERER']);
+                return $this->redirect(['admin/comments']);
             } else {
                 Yii::$app->session->setFlash('error', 'Не удалось изменить коментарий');
-                return $this->redirect($_SERVER['HTTP_REFERER']);
-//                return $this->redirect(['admin/comments']);
+//                return $this->redirect($_SERVER['HTTP_REFERER']);
+                return $this->redirect(['admin/comments']);
             }
         }
 
@@ -166,15 +166,20 @@ class AdminController extends Controller
             return $this->redirect($_SERVER['HTTP_REFERER']);
         }
 
+
+
         $user = User::findOne(['id' => $id]);
         //if save changes
         if ($user->load(Yii::$app->request->post())) {
+            $user->username = $_POST['User']['username'];
+            $user->email = $_POST['User']['email'];
+            $user->isAdmin = $_POST['User']['isAdmin'];
             if ($user->save()) {
                 Yii::$app->session->setFlash('success', 'Данные пользователя успешно изменены');
-                return $this->redirect($_SERVER['HTTP_REFERER']);
+                return $this->redirect(['admin/users']);
             } else {
                 Yii::$app->session->setFlash('error', 'Не удалось изменить данные пользоваля');
-                return $this->redirect($_SERVER['HTTP_REFERER']);
+                return $this->redirect(['admin/users']);
             }
         }
 

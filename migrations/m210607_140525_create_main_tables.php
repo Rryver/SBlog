@@ -26,8 +26,8 @@ class m210607_140525_create_main_tables extends Migration
             'id' => Schema::TYPE_PK,
             'username' => $this->string(50)->notNull(),
             'text' => $this->text()->notNull(),
-            'created_at' => Schema::TYPE_DATE,
-            'updated_at' => Schema::TYPE_DATE,
+            'created_at' => Schema::TYPE_DATETIME,
+            'updated_at' => Schema::TYPE_DATETIME,
         ]);
     }
 

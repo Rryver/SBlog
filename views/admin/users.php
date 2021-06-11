@@ -16,6 +16,7 @@ use yii\helpers\Html; ?>
 
       <?= \app\widgets\Alert::widget() ?>
 
+
       <?= GridView::widget([
           'dataProvider' => $dataProvider,
           'options' => ['class' => 'admin-users__gridview admin-panel__gridview'],
@@ -65,5 +66,6 @@ use yii\helpers\Html; ?>
               ]
           ],
       ]) ?>
+
   </div>
 </div>

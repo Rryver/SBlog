@@ -30,7 +30,10 @@ use yii\widgets\Pjax;
             'columns' => [
                 ['class' => 'yii\grid\SerialColumn'],
                 'username',
-                'text',
+                [
+                    'attribute' => 'text',
+                    'contentOptions' => ['style' => 'max-width: 600px; overflow-x: auto'],
+                ],
                 [
                     'label' => 'Статья',
                     'attribute' => 'post_id',

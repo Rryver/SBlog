@@ -6,6 +6,7 @@ use Yii;
 use yii\base\NotSupportedException;
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
+use yii\db\Expression;
 use yii\web\IdentityInterface;
 
 /**
@@ -41,7 +42,12 @@ class User extends ActiveRecord implements IdentityInterface
     public function behaviors()
     {
         return [
-            TimestampBehavior::className(),
+            [
+                'class' => TimestampBehavior::class,
+                'createdAtAttribute' => 'created_at',
+                'updatedAtAttribute' => 'updated_at',
+                'value' => new Expression('NOW()'),
+            ],
         ];
     }
 
@@ -55,10 +61,11 @@ class User extends ActiveRecord implements IdentityInterface
             'verification_token' => 'Ключ подтверждения',
             'email' => 'email',
             'auth_key' => '',
-            'status' => 'Статус',
+            'status' => 'Статус аккаунта',
             'created_at' => 'Создан',
             'updated_at' => 'Обновлен',
             'password' => 'Пароль',
+            'isAdmin' => 'Статус администратора',
         ];
     }
 
@@ -247,7 +254,8 @@ class User extends ActiveRecord implements IdentityInterface
 
     public static function getUsernameById($id)
     {
-        return static::findOne(['id' => $id])->username;
+        $user = static::findOne(['id' => $id]);
+        return isset($user) ? $user->username : 'Автор не найден';
     }
 
     public static function getUserStatus($key = null)

@@ -7,6 +7,11 @@
 use app\widgets\Alert;
 use yii\helpers\Url;
 
+if (Yii::$app->user->isGuest) {
+    $isAdmin = 0;
+} else {
+    $isAdmin = Yii::$app->user->identity->isAdmin;
+}
 ?>
 
 
@@ -29,7 +34,7 @@ use yii\helpers\Url;
             <p class="card-comment__text"><?= $item->text ?></p>
           </div>
         </div>
-          <?php if (Yii::$app->user->identity->isAdmin) { ?>
+          <?php if ($isAdmin) { ?>
           <div class="comments__comment-edit comment-edit" commentid="<?= $item->id ?>">
             <button class="comment-edit__btn comment-edit__btn_delete btn-common_danger"
             action="<?= Url::to(['site/comment-delete']) ?>">Удалить</button>

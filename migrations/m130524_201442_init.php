@@ -1,6 +1,7 @@
 <?php
 
 use yii\db\Migration;
+use yii\db\Schema;
 
 class m130524_201442_init extends Migration
 {
@@ -21,8 +22,8 @@ class m130524_201442_init extends Migration
             'email' => $this->string()->notNull()->unique(),
 
             'status' => $this->smallInteger()->notNull()->defaultValue(10),
-            'created_at' => $this->integer()->notNull(),
-            'updated_at' => $this->integer()->notNull(),
+            'created_at' => Schema::TYPE_DATETIME,
+            'updated_at' => Schema::TYPE_DATETIME,
             'isAdmin' => $this->integer(11)->notNull()->defaultValue(0),
         ], $tableOptions);
     }
